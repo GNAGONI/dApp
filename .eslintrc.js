@@ -18,5 +18,6 @@ module.exports = {
     'prettier/prettier': 'error',
     'arrow-parens': 0,
     'no-underscore-dangle': 0,
+    'no-console': 0,
   },
 };

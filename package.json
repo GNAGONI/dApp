@@ -10,6 +10,7 @@
     "ganache-cli": "^6.8.1",
     "mocha": "^7.0.0",
     "solc": "^0.4.25",
+    "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.2.4"
   },
   "devDependencies": {
@@ -22,7 +23,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npm run test && npm run lint && node ./deploy.js"
   },
   "repository": {
     "type": "git",

@@ -7,7 +7,10 @@
     "test": "test"
   },
   "dependencies": {
-    "solc": "^0.4.25"
+    "ganache-cli": "^6.8.1",
+    "mocha": "^7.0.0",
+    "solc": "^0.4.25",
+    "web3": "^1.2.4"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
@@ -18,7 +21,7 @@
     "prettier": "^1.19.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "lint": "eslint ."
   },
   "repository": {
@@ -33,9 +36,8 @@
   "homepage": "https://github.com/GNAGONI/dApp#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run lint",
-      "...": "..."
+      "pre-commit": "npm run lint && npm run test",
+      "pre-push": "npm run lint && npm run test"
     }
   }
 }

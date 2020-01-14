@@ -3,6 +3,7 @@ module.exports = {
     commonjs: true,
     es6: true,
     node: true,
+    mocha: true,
   },
   extends: ['airbnb-base'],
   globals: {
@@ -15,5 +16,6 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': 'error',
+    'arrow-parens': 0,
   },
 };

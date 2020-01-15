@@ -1,12 +1,13 @@
-const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
+const dotenv = require('dotenv');
+const HDWalletProvider = require('truffle-hdwallet-provider');
 const { interface: contractInterface, bytecode } = require('./compile');
 
+dotenv.config();
 const provider = new HDWalletProvider(
-  'dove double manual period lover figure jesus mountain daisy lazy ocean moran',
-  'https://rinkeby.infura.io/v3/57a30619ca91491f9fbeb4adc67298a7',
+  process.env.METAMASK_MNEMONICS,
+  process.env.INFURA_ENDPOINT,
 );
-
 const web3 = new Web3(provider);
 
 const deploy = async () => {

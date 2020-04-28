@@ -25,7 +25,8 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
-    "deploy": "npm run test && npm run lint && node ./deploy.js"
+    "deploy:dev": "npm run test && npm run lint && node ./deploy.js",
+    "deploy": "node ./deploy.js"
   },
   "repository": {
     "type": "git",

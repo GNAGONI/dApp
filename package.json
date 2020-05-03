@@ -14,7 +14,9 @@
     "ganache-cli": "^6.8.1",
     "jsonwebtoken": "^8.5.1",
     "mocha": "7.0.0",
+    "mysql2": "^2.1.0",
     "nodemon": "^2.0.3",
+    "sequelize": "^5.21.7",
     "solc": "0.4.25",
     "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.2.4"

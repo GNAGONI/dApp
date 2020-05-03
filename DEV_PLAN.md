@@ -7,7 +7,7 @@ TODO:
    3.2 Validation - DONE
    3.3 Error handling - DONE
 4. Add authorization - DONE
-5. Integrate database
+5. Integrate database - DONE
 6. Full coverage of token interface
 7. Add swagger
 

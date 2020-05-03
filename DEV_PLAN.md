@@ -6,10 +6,10 @@ TODO:
    3.1 Basic migration - DONE
    3.2 Validation - DONE
    3.3 Error handling - DONE
-   3.4 Full coverage of token interface
-4. Add swagger
+4. Add authorization - DONE
 5. Integrate database
-6. Add authorization
+6. Full coverage of token interface
+7. Add swagger
 
 INVESTIGATE:
 

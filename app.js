@@ -9,7 +9,6 @@ dotenv.config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/token', tokenRouter);
-
 app.use((req, res) => {
   res.status(404).send('Not Found');
 });

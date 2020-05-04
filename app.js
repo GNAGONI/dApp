@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const tokenRouter = require('./routes/tokenRouter');
 const userRouter = require('./routes/userRouter');
 const authenticate = require('./middlewares/authMiddleware');
-const sequelize = require('./models');
+const db = require('./models');
 
 const app = express();
 dotenv.config();
@@ -17,7 +17,7 @@ app.use((req, res) => {
   res.status(404).send('Not Found');
 });
 
-sequelize
+db.sequelize
   .sync()
   .then(() => {
     app.listen(process.env.PORT, () => {

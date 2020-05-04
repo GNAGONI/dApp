@@ -13,4 +13,21 @@ const sequelize = new Sequelize(
   },
 );
 
-module.exports = sequelize;
+const db = {};
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+db.user = require('./user')(sequelize, Sequelize);
+db.token = require('./token')(sequelize, Sequelize);
+
+db.user.hasMany(db.token, {
+  foreignKey: 'userId',
+  sourceKey: 'id',
+});
+db.token.belongsTo(db.user, {
+  foreignKey: 'userId',
+  targetKey: 'id',
+});
+
+module.exports = db;

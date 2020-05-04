@@ -32,8 +32,6 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
-    "deploy:dev": "npm run test && npm run lint && node ./deploy.js",
-    "deploy": "node ./deploy.js",
     "start": "nodemon ./app.js"
   },
   "repository": {

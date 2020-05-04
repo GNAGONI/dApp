@@ -1,15 +1,16 @@
 module.exports = (sequelize, Sequelize) => {
-  const Users = sequelize.define('users', {
+  const Tokens = sequelize.define('tokens', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
       allowNull: false,
     },
-    accountAddress: {
+    tokenAddress: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },
   });
 
-  return Users;
+  return Tokens;
 };

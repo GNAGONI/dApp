@@ -8,8 +8,10 @@ TODO:
    3.3 Error handling - DONE
 4. Add authorization - DONE
 5. Integrate database - DONE
-6. Full coverage of token interface
-7. Add swagger
+6. Basic coverage of token interface - DONE
+7. Main project intregration
+8. Full coverage of token interface
+9. Add swagger
 
 INVESTIGATE:
 

@@ -1,8 +1,8 @@
-const userModel = require('../models/user');
+const db = require('../models');
 
 const getAll = async (req, res) => {
   try {
-    const result = await userModel.findAll();
+    const result = await db.user.findAll();
     const users = result.map(user => user.dataValues);
     res.send(users);
   } catch (e) {

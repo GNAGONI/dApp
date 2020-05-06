@@ -2,7 +2,7 @@ const assert = require('assert');
 const events = require('events');
 const ganache = require('ganache-cli');
 const Web3 = require('web3');
-const { compile } = require('../compile');
+const { compile } = require('../services/tokenService');
 
 events.EventEmitter.prototype._maxListeners = 1000;
 const provider = ganache.provider();

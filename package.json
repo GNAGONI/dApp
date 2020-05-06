@@ -7,10 +7,17 @@
     "test": "test"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.1",
     "ganache-cli": "^6.8.1",
-    "mocha": "^7.0.0",
-    "solc": "^0.4.25",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "7.0.0",
+    "mysql2": "^2.1.0",
+    "nodemon": "^2.0.3",
+    "sequelize": "^5.21.7",
+    "solc": "0.4.25",
     "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.2.4"
   },
@@ -25,8 +32,7 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
-    "deploy:dev": "npm run test && npm run lint && node ./deploy.js",
-    "deploy": "node ./deploy.js"
+    "start": "nodemon ./app.js"
   },
   "repository": {
     "type": "git",

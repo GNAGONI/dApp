@@ -4,10 +4,10 @@ const tokenService = require('../services/tokenService');
 
 const getAll = async (req, res) => {
   try {
-    const { id } = req.user;
+    const { userId } = req.user;
     const result = await db.token.findAll({
       where: {
-        userId: id,
+        user_id: userId,
       },
       include: [db.user],
     });
@@ -30,8 +30,9 @@ const createToken = async (req, res) => {
         tokenAmount,
         accountAddress,
         accountMnemonics,
+        projectId,
       } = req.body;
-      const { id } = req.user;
+      const { userId } = req.user;
       const tokenAddress = await tokenService.deployToken(
         tokenAmount,
         tokenName,
@@ -40,13 +41,13 @@ const createToken = async (req, res) => {
         accountMnemonics,
       );
       const result = await db.token.create({
-        tokenAddress,
-        userId: id,
+        token_address: tokenAddress,
+        user_id: userId,
+        project_id: projectId,
       });
       res.send(result);
     }
   } catch (e) {
-    console.log(e);
     res.status(500).json();
   }
 };

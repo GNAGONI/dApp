@@ -57,7 +57,12 @@ const validate = method => {
           .withMessage('Token symbol does not exist'),
         body('tokenAmount')
           .isInt()
-          .exists(),
+          .exists()
+          .withMessage('Token amount does not exist'),
+        body('projectId')
+          .isInt()
+          .exists()
+          .withMessage('Project id does not exist'),
       ];
     }
     case 'getData': {
@@ -85,8 +90,9 @@ const validate = method => {
           'Account address of receiver',
         ),
         body('tokenAmount')
-          .isInt()
-          .exists(),
+          .isString()
+          .exists()
+          .withMessage('Token amount does not exist'),
         validateAccountMnemonics(
           'body',
           'accountMnemonics',

@@ -10,6 +10,7 @@ const sequelize = new Sequelize(
   {
     dialect: 'mysql',
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
   },
 );
 
@@ -22,11 +23,11 @@ db.user = require('./user')(sequelize, Sequelize);
 db.token = require('./token')(sequelize, Sequelize);
 
 db.user.hasMany(db.token, {
-  foreignKey: 'userId',
+  foreignKey: 'user_id',
   sourceKey: 'id',
 });
 db.token.belongsTo(db.user, {
-  foreignKey: 'userId',
+  foreignKey: 'user_id',
   targetKey: 'id',
 });
 

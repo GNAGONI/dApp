@@ -100,6 +100,13 @@ const validate = method => {
         ),
       ];
     }
+    case 'getDataByProject': {
+      return [
+        query('projectId')
+          .isInt()
+          .exists(),
+      ];
+    }
     default: {
       return [];
     }

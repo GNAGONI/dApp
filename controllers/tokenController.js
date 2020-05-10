@@ -40,12 +40,15 @@ const createToken = async (req, res) => {
         accountAddress,
         accountMnemonics,
       );
-      const result = await db.token.create({
+
+      await db.token.create({
         token_address: tokenAddress,
         user_id: userId,
         project_id: projectId,
       });
-      res.send(result);
+      const tokenData = await tokenService.getTokenData(tokenAddress);
+
+      res.send({ ...tokenData, tokenAddress });
     }
   } catch (e) {
     res.status(500).json();
@@ -112,10 +115,36 @@ const sendTokens = async (req, res) => {
   }
 };
 
+const getDataByProject = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(422).json({ errors: errors.array() });
+    } else {
+      const { projectId } = req.query;
+      const result = await db.token.findAll({
+        where: {
+          project_id: projectId,
+        },
+      });
+      if (result.length) {
+        const { token_address: tokenAddress } = result[0];
+        const tokenData = await tokenService.getTokenData(tokenAddress);
+        res.send({ ...tokenData, tokenAddress });
+      } else {
+        res.sendStatus(404).json();
+      }
+    }
+  } catch (e) {
+    res.status(500).json();
+  }
+};
+
 module.exports = {
   createToken,
   getAll,
   getData,
   getBalance,
   sendTokens,
+  getDataByProject,
 };

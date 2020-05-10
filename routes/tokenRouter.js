@@ -25,5 +25,10 @@ tokenRouter.post(
   tokenValidation.validate('sendTokens'),
   tokenController.sendTokens,
 );
+tokenRouter.get(
+  '/getDataByProject',
+  tokenValidation.validate('getDataByProject'),
+  tokenController.getDataByProject,
+);
 
 module.exports = tokenRouter;

@@ -2,34 +2,41 @@ const express = require('express');
 const tokenController = require('../controllers/tokenController');
 const Validator = require('../validations/tokenValidation');
 
-const tokenRouter = express.Router();
-const validator = new Validator();
+class TokenRouter {
+  constructor() {
+    this.tokenRouter = express.Router();
+    this.validator = new Validator();
+    this.tokenRouter.get('/getAll', tokenController.getAll);
+    this.tokenRouter.post(
+      '/create',
+      this.validator.validate('createToken'),
+      tokenController.createToken,
+    );
+    this.tokenRouter.get(
+      '/getData',
+      this.validator.validate('getData'),
+      tokenController.getData,
+    );
+    this.tokenRouter.get(
+      '/getBalance',
+      this.validator.validate('getBalance'),
+      tokenController.getBalance,
+    );
+    this.tokenRouter.post(
+      '/sendTokens',
+      this.validator.validate('sendTokens'),
+      tokenController.sendTokens,
+    );
+    this.tokenRouter.get(
+      '/getDataByProject',
+      this.validator.validate('getDataByProject'),
+      tokenController.getDataByProject,
+    );
+  }
 
-tokenRouter.get('/getAll', tokenController.getAll);
-tokenRouter.post(
-  '/create',
-  validator.validate('createToken'),
-  tokenController.createToken,
-);
-tokenRouter.get(
-  '/getData',
-  validator.validate('getData'),
-  tokenController.getData,
-);
-tokenRouter.get(
-  '/getBalance',
-  validator.validate('getBalance'),
-  tokenController.getBalance,
-);
-tokenRouter.post(
-  '/sendTokens',
-  validator.validate('sendTokens'),
-  tokenController.sendTokens,
-);
-tokenRouter.get(
-  '/getDataByProject',
-  validator.validate('getDataByProject'),
-  tokenController.getDataByProject,
-);
+  getTokenRouter() {
+    return this.tokenRouter;
+  }
+}
 
-module.exports = tokenRouter;
+module.exports = TokenRouter;

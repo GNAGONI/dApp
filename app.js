@@ -3,18 +3,19 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const TokenRouter = require('./routes/tokenRouter');
-const userRouter = require('./routes/userRouter');
+const UserRouter = require('./routes/userRouter');
 const authenticate = require('./middlewares/authMiddleware');
 const db = require('./models');
 
 dotenv.config();
 const app = express();
 const tokenRouter = new TokenRouter();
+const userRouter = new UserRouter();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/user', authenticate, userRouter);
+app.use('/user', authenticate, userRouter.getUserRouter());
 app.use('/token', authenticate, tokenRouter.getTokenRouter());
 app.use((req, res) => {
   res.status(404).send('Not Found');

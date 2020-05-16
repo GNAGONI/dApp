@@ -1,8 +1,15 @@
 const express = require('express');
 const userController = require('../controllers/userController');
 
-const userRouter = express.Router();
+class UserRouter {
+  constructor() {
+    this.userRouter = express.Router();
+    this.userRouter.get('/getAll', userController.getAll);
+  }
 
-userRouter.get('/getAll', userController.getAll);
+  getUserRouter() {
+    return this.userRouter;
+  }
+}
 
-module.exports = userRouter;
+module.exports = UserRouter;

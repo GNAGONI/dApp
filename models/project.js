@@ -1,23 +1,31 @@
-module.exports = (sequelize, Sequelize) => {
-  const Projects = sequelize.define(
-    'projects',
-    {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        allowNull: false,
+class ProjectModel {
+  constructor(sequelize, Sequelize) {
+    this.modelName = 'projects';
+    const Projects = sequelize.define(
+      this.modelName,
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          allowNull: false,
+        },
+        name: {
+          type: Sequelize.STRING(45),
+          allowNull: false,
+        },
       },
-      name: {
-        type: Sequelize.STRING(45),
-        allowNull: false,
+      {
+        timestamps: false,
+        underscored: true,
+        tableName: this.modelName,
       },
-    },
-    {
-      timestamps: false,
-      underscored: true,
-      tableName: 'projects',
-    },
-  );
+    );
+    this.projects = Projects;
+  }
 
-  return Projects;
-};
+  getProjectModel() {
+    return this.projects;
+  }
+}
+
+module.exports = ProjectModel;

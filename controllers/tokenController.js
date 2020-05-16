@@ -1,11 +1,12 @@
 const { validationResult } = require('express-validator');
-const db = require('../models');
+const Database = require('../models');
 const TokenService = require('../services/tokenService');
 
 const getAll = async (req, res) => {
   try {
-    const result = await db.token.findAll({
-      include: [db.user, db.project],
+    const database = new Database();
+    const result = await database.getTokenModel().findAll({
+      include: [database.getUserModel(), database.getProjectModel()],
     });
     const tokens = result.map(token => ({
       id: token.dataValues.id,
@@ -47,7 +48,8 @@ const createToken = async (req, res) => {
         accountMnemonics,
       );
 
-      await db.token.create({
+      const database = new Database();
+      await database.getTokenModel().create({
         token_address: tokenAddress,
         user_id: userId,
         project_id: projectId,
@@ -135,7 +137,8 @@ const getDataByProject = async (req, res) => {
       res.status(422).json({ errors: errors.array() });
     } else {
       const { projectId } = req.query;
-      const result = await db.token.findAll({
+      const database = new Database();
+      const result = await database.getTokenModel().findAll({
         where: {
           project_id: projectId,
         },

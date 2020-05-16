@@ -2,7 +2,7 @@ const assert = require('assert');
 const events = require('events');
 const ganache = require('ganache-cli');
 const Web3 = require('web3');
-const { compile } = require('../services/tokenService');
+const TokenService = require('../services/tokenService');
 
 events.EventEmitter.prototype._maxListeners = 1000;
 const provider = ganache.provider();
@@ -13,10 +13,13 @@ let accounts;
 
 beforeEach(async () => {
   accounts = await web3.eth.getAccounts();
-  const { contractInterface, contractBytecode } = compile('token.sol', 'Token');
-  auth = await new web3.eth.Contract(JSON.parse(contractInterface))
+  const tokenService = new TokenService();
+  tokenService.compile('token.sol', 'Token');
+  auth = await new web3.eth.Contract(
+    JSON.parse(tokenService.getContractInterface()),
+  )
     .deploy({
-      data: contractBytecode,
+      data: tokenService.getContractBytecode(),
       arguments: [100, 'TestToken', 'TTN'],
     })
     .send({ gas: '1000000', from: accounts[0], value: '0' });

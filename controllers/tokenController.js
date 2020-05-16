@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const db = require('../models');
-const tokenService = require('../services/tokenService');
+const TokenService = require('../services/tokenService');
 
 const getAll = async (req, res) => {
   try {
@@ -38,6 +38,7 @@ const createToken = async (req, res) => {
         projectId,
       } = req.body;
       const { userId } = req.user;
+      const tokenService = new TokenService();
       const tokenAddress = await tokenService.deployToken(
         tokenAmount,
         tokenName,
@@ -71,6 +72,7 @@ const getData = async (req, res) => {
       res.status(422).json({ errors: errors.array() });
     } else {
       const { tokenAddress } = req.query;
+      const tokenService = new TokenService();
       const tokenData = await tokenService.getTokenData(tokenAddress);
       res.send(tokenData);
     }
@@ -86,6 +88,7 @@ const getBalance = async (req, res) => {
       res.status(422).json({ errors: errors.array() });
     } else {
       const { tokenAddress, accountAddress } = req.query;
+      const tokenService = new TokenService();
       const balance = await tokenService.getBalance(
         tokenAddress,
         accountAddress,
@@ -110,6 +113,7 @@ const sendTokens = async (req, res) => {
         tokenAmount,
         accountMnemonics,
       } = req.body;
+      const tokenService = new TokenService();
       const transactionHash = await tokenService.transferTokensFrom(
         tokenAddress,
         senderAccountAddress,
@@ -138,6 +142,7 @@ const getDataByProject = async (req, res) => {
       });
       if (result.length) {
         const { token_address: tokenAddress } = result[0];
+        const tokenService = new TokenService();
         const tokenData = await tokenService.getTokenData(tokenAddress);
         res.send({ ...tokenData, tokenAddress });
       } else {

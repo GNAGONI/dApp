@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const TokenRouter = require('./routes/tokenRouter');
 const UserRouter = require('./routes/userRouter');
-const authenticate = require('./middlewares/authMiddleware');
+const Middlewares = require('./middlewares');
 const Database = require('./models');
 
 dotenv.config();
@@ -12,12 +12,14 @@ const app = express();
 const tokenRouter = new TokenRouter();
 const userRouter = new UserRouter();
 const db = new Database();
+const middlewares = new Middlewares();
+const authMiddleware = middlewares.getAuthMiddleware();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/user', authenticate, userRouter.getUserRouter());
-app.use('/token', authenticate, tokenRouter.getTokenRouter());
+app.use('/user', authMiddleware.authenticate(), userRouter.getUserRouter());
+app.use('/token', authMiddleware.authenticate(), tokenRouter.getTokenRouter());
 app.use((req, res) => {
   res.status(404).send('Not Found');
 });

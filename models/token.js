@@ -20,6 +20,22 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
+      token_amount: {
+        type: Sequelize.STRING(32),
+        allowNull: false,
+      },
+      token_name: {
+        type: Sequelize.STRING(32),
+        allowNull: false,
+      },
+      token_symbol: {
+        type: Sequelize.STRING(32),
+        allowNull: false,
+      },
+      token_decimals: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,

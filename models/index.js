@@ -21,6 +21,7 @@ db.sequelize = sequelize;
 
 db.user = require('./user')(sequelize, Sequelize);
 db.token = require('./token')(sequelize, Sequelize);
+db.project = require('./project')(sequelize, Sequelize);
 
 db.user.hasMany(db.token, {
   foreignKey: 'user_id',
@@ -28,6 +29,15 @@ db.user.hasMany(db.token, {
 });
 db.token.belongsTo(db.user, {
   foreignKey: 'user_id',
+  targetKey: 'id',
+});
+
+db.project.hasOne(db.token, {
+  foreignKey: 'project_id',
+  sourceKey: 'id',
+});
+db.token.belongsTo(db.project, {
+  foreignKey: 'project_id',
   targetKey: 'id',
 });
 

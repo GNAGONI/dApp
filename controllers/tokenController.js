@@ -4,14 +4,19 @@ const tokenService = require('../services/tokenService');
 
 const getAll = async (req, res) => {
   try {
-    const { userId } = req.user;
     const result = await db.token.findAll({
-      where: {
-        user_id: userId,
-      },
-      include: [db.user],
+      include: [db.user, db.project],
     });
-    const tokens = result.map(token => token.dataValues);
+    const tokens = result.map(token => ({
+      id: token.dataValues.id,
+      tokenAddress: token.dataValues.token_address,
+      tokenAmount: token.dataValues.token_amount,
+      tokenName: token.dataValues.token_name,
+      tokenSymbol: token.dataValues.token_symbol,
+      tokenDecimals: token.dataValues.token_decimals,
+      user: token.dataValues.user,
+      project: token.dataValues.project,
+    }));
     res.send(tokens);
   } catch (e) {
     res.status(500).json();
@@ -45,6 +50,10 @@ const createToken = async (req, res) => {
         token_address: tokenAddress,
         user_id: userId,
         project_id: projectId,
+        token_amount: Number(tokenAmount) * 10 ** 18,
+        token_name: tokenName,
+        token_symbol: tokenSymbol,
+        token_decimals: 18,
       });
       const tokenData = await tokenService.getTokenData(tokenAddress);
 

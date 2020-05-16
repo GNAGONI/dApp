@@ -1,17 +1,13 @@
 module.exports = (sequelize, Sequelize) => {
-  const Users = sequelize.define(
-    'users',
+  const Projects = sequelize.define(
+    'projects',
     {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
       },
-      account_address: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      username: {
+      name: {
         type: Sequelize.STRING(45),
         allowNull: false,
       },
@@ -19,9 +15,9 @@ module.exports = (sequelize, Sequelize) => {
     {
       timestamps: false,
       underscored: true,
-      tableName: 'users',
+      tableName: 'projects',
     },
   );
 
-  return Users;
+  return Projects;
 };

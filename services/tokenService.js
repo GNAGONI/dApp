@@ -2,7 +2,7 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const path = require('path');
 const solc = require('solc');
-const { getWeb3, getAccountByAddress } = require('./providerService');
+const ProviderService = require('./providerService');
 
 dotenv.config();
 
@@ -26,8 +26,9 @@ const deployToken = async (
   accountAddress,
   accountMnemonics,
 ) => {
-  const web3 = getWeb3(accountMnemonics);
-  const account = await getAccountByAddress(web3, accountAddress);
+  const providerService = new ProviderService(accountMnemonics);
+  const web3 = providerService.getWeb3();
+  const account = await providerService.getAccountByAddress(accountAddress);
 
   console.log('Deploying to the Network using account : ', account);
   const { contractInterface, contractBytecode } = compile('token.sol', 'Token');
@@ -53,7 +54,8 @@ const deployToken = async (
 };
 
 const getTokenData = async contractAddress => {
-  const web3 = getWeb3(process.env.METAMASK_MNEMONICS);
+  const providerService = new ProviderService(process.env.METAMASK_MNEMONICS);
+  const web3 = providerService.getWeb3();
   const { contractInterface } = compile('token.sol', 'Token');
   const contract = await new web3.eth.Contract(
     JSON.parse(contractInterface),
@@ -72,7 +74,8 @@ const getTokenData = async contractAddress => {
 };
 
 const getBalance = async (contractAddress, accountAddress) => {
-  const web3 = getWeb3(process.env.METAMASK_MNEMONICS);
+  const providerService = new ProviderService(process.env.METAMASK_MNEMONICS);
+  const web3 = providerService.getWeb3();
   const { contractInterface } = compile('token.sol', 'Token');
   const contract = await new web3.eth.Contract(
     JSON.parse(contractInterface),
@@ -89,8 +92,11 @@ const transferTokensFrom = async (
   tokenAmount,
   accountMnemonics,
 ) => {
-  const web3 = getWeb3(accountMnemonics);
-  const account = await getAccountByAddress(web3, senderAccountAddress);
+  const providerService = new ProviderService(accountMnemonics);
+  const web3 = providerService.getWeb3();
+  const account = await providerService.getAccountByAddress(
+    senderAccountAddress,
+  );
   const { contractInterface } = compile('token.sol', 'Token');
   const contract = await new web3.eth.Contract(
     JSON.parse(contractInterface),

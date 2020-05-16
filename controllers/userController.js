@@ -1,16 +1,21 @@
 const Database = require('../models');
 
-const getAll = async (req, res) => {
-  try {
-    const database = new Database();
-    const result = await database.getUserModel().findAll();
-    const users = result.map(user => user.dataValues);
-    res.send(users);
-  } catch (e) {
-    res.status(500).json();
+class UserController {
+  constructor() {
+    this.database = new Database();
   }
-};
 
-module.exports = {
-  getAll,
-};
+  getAll() {
+    return async (req, res) => {
+      try {
+        const result = await this.database.getUserModel().findAll();
+        const users = result.map(user => user.dataValues);
+        res.send(users);
+      } catch (e) {
+        res.status(500).json();
+      }
+    };
+  }
+}
+
+module.exports = UserController;

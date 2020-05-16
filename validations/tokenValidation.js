@@ -1,116 +1,162 @@
 const { body, query } = require('express-validator');
 
-const getMethod = (location, fieldName) => {
-  let method = () => {};
-  switch (location) {
-    case 'query':
-      method = query(fieldName);
-      break;
-    default:
-      method = body(fieldName);
-      break;
+class Validator {
+  constructor() {
+    this.method = () => {};
+    this.body = body;
+    this.query = query;
   }
-  return method;
-};
 
-const validateEthereumAddress = (location, fieldName, messageName) => {
-  const method = getMethod(location, fieldName);
-  return method
-    .isString()
-    .withMessage(`${messageName} should be a string`)
-    .matches(/^0x[a-fA-F0-9]{40}$/)
-    .withMessage(`${messageName} should be an ethereum address`)
-    .exists()
-    .withMessage(`${messageName} doesn't exist`);
-};
-
-const validateAccountMnemonics = (location, fieldName, messageName) => {
-  const method = getMethod(location, fieldName);
-  return method
-    .isString()
-    .withMessage(`${messageName} should be a string`)
-    .isLength({ min: '10' })
-    .withMessage(`${messageName}  length should be more than 10 symbols`)
-    .exists()
-    .withMessage(`${messageName}  does not exist`);
-};
-
-const validate = method => {
-  switch (method) {
-    case 'createToken': {
-      return [
-        validateEthereumAddress('body', 'accountAddress', 'Account address'),
-        validateAccountMnemonics(
-          'body',
-          'accountMnemonics',
-          'Account mnemonics',
-        ),
-        body('tokenName')
-          .isString()
-          .withMessage('Token name should be a string')
-          .exists()
-          .withMessage('Token name does not exist'),
-        body('tokenSymbol')
-          .isString()
-          .withMessage('Token symbol should be a string')
-          .exists()
-          .withMessage('Token symbol does not exist'),
-        body('tokenAmount')
-          .isInt()
-          .exists()
-          .withMessage('Token amount does not exist'),
-        body('projectId')
-          .isInt()
-          .exists()
-          .withMessage('Project id does not exist'),
-      ];
-    }
-    case 'getData': {
-      return [
-        validateEthereumAddress('query', 'tokenAddress', 'Token address'),
-      ];
-    }
-    case 'getBalance': {
-      return [
-        validateEthereumAddress('query', 'tokenAddress', 'Token address'),
-        validateEthereumAddress('query', 'accountAddress', 'Account address'),
-      ];
-    }
-    case 'sendTokens': {
-      return [
-        validateEthereumAddress('body', 'tokenAddress', 'Token address'),
-        validateEthereumAddress(
-          'body',
-          'senderAccountAddress',
-          'Account address of sender',
-        ),
-        validateEthereumAddress(
-          'body',
-          'receiverAccountAddress',
-          'Account address of receiver',
-        ),
-        body('tokenAmount')
-          .isString()
-          .exists()
-          .withMessage('Token amount does not exist'),
-        validateAccountMnemonics(
-          'body',
-          'accountMnemonics',
-          'Account mnemonics',
-        ),
-      ];
-    }
-    case 'getDataByProject': {
-      return [
-        query('projectId')
-          .isInt()
-          .exists(),
-      ];
-    }
-    default: {
-      return [];
+  setMethod(location, fieldName) {
+    switch (location) {
+      case 'query':
+        this.method = this.query(fieldName);
+        break;
+      default:
+        this.method = this.body(fieldName);
+        break;
     }
   }
-};
 
-module.exports = { validate };
+  validateEthereumAddressField(location, fieldName, messageName) {
+    this.setMethod(location, fieldName);
+    return this.method
+      .isString()
+      .withMessage(`${messageName} should be a string`)
+      .matches(/^0x[a-fA-F0-9]{40}$/)
+      .withMessage(`${messageName} should be an ethereum address`)
+      .exists()
+      .withMessage(`${messageName} doesn't exist`);
+  }
+
+  validateAccountMnemonicsField(location, fieldName, messageName) {
+    this.setMethod(location, fieldName);
+    return this.method
+      .isString()
+      .withMessage(`${messageName} should be a string`)
+      .isLength({ min: '10' })
+      .withMessage(`${messageName}  length should be more than 10 symbols`)
+      .exists()
+      .withMessage(`${messageName}  does not exist`);
+  }
+
+  validateCreateToken() {
+    return [
+      this.validateEthereumAddressField(
+        'body',
+        'accountAddress',
+        'Account address',
+      ),
+      this.validateAccountMnemonicsField(
+        'body',
+        'accountMnemonics',
+        'Account mnemonics',
+      ),
+      this.body('tokenName')
+        .isString()
+        .withMessage('Token name should be a string')
+        .exists()
+        .withMessage('Token name does not exist'),
+      this.body('tokenSymbol')
+        .isString()
+        .withMessage('Token symbol should be a string')
+        .exists()
+        .withMessage('Token symbol does not exist'),
+      this.body('tokenAmount')
+        .isInt()
+        .exists()
+        .withMessage('Token amount does not exist'),
+      this.body('projectId')
+        .isInt()
+        .exists()
+        .withMessage('Project id does not exist'),
+    ];
+  }
+
+  validateGetData() {
+    return [
+      this.validateEthereumAddressField(
+        'query',
+        'tokenAddress',
+        'Token address',
+      ),
+    ];
+  }
+
+  validateGetBalance() {
+    return [
+      this.validateEthereumAddressField(
+        'query',
+        'tokenAddress',
+        'Token address',
+      ),
+      this.validateEthereumAddressField(
+        'query',
+        'accountAddress',
+        'Account address',
+      ),
+    ];
+  }
+
+  validateSendTokens() {
+    return [
+      this.validateEthereumAddressField(
+        'body',
+        'tokenAddress',
+        'Token address',
+      ),
+      this.validateEthereumAddressField(
+        'body',
+        'senderAccountAddress',
+        'Account address of sender',
+      ),
+      this.validateEthereumAddressField(
+        'body',
+        'receiverAccountAddress',
+        'Account address of receiver',
+      ),
+      this.body('tokenAmount')
+        .isString()
+        .exists()
+        .withMessage('Token amount does not exist'),
+      this.validateAccountMnemonicsField(
+        'body',
+        'accountMnemonics',
+        'Account mnemonics',
+      ),
+    ];
+  }
+
+  validateGetDataByProject() {
+    return [
+      this.query('projectId')
+        .isInt()
+        .exists(),
+    ];
+  }
+
+  validate(method) {
+    switch (method) {
+      case 'createToken': {
+        return this.validateCreateToken();
+      }
+      case 'getData': {
+        return this.validateGetData();
+      }
+      case 'getBalance': {
+        return this.validateGetBalance();
+      }
+      case 'sendTokens': {
+        return this.validateSendTokens();
+      }
+      case 'getDataByProject': {
+        return this.validateGetDataByProject();
+      }
+      default: {
+        return [];
+      }
+    }
+  }
+}
+
+module.exports = Validator;

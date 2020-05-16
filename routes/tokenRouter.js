@@ -1,33 +1,34 @@
 const express = require('express');
 const tokenController = require('../controllers/tokenController');
-const tokenValidation = require('../validations/tokenValidation');
+const Validator = require('../validations/tokenValidation');
 
 const tokenRouter = express.Router();
+const validator = new Validator();
 
 tokenRouter.get('/getAll', tokenController.getAll);
 tokenRouter.post(
   '/create',
-  tokenValidation.validate('createToken'),
+  validator.validate('createToken'),
   tokenController.createToken,
 );
 tokenRouter.get(
   '/getData',
-  tokenValidation.validate('getData'),
+  validator.validate('getData'),
   tokenController.getData,
 );
 tokenRouter.get(
   '/getBalance',
-  tokenValidation.validate('getBalance'),
+  validator.validate('getBalance'),
   tokenController.getBalance,
 );
 tokenRouter.post(
   '/sendTokens',
-  tokenValidation.validate('sendTokens'),
+  validator.validate('sendTokens'),
   tokenController.sendTokens,
 );
 tokenRouter.get(
   '/getDataByProject',
-  tokenValidation.validate('getDataByProject'),
+  validator.validate('getDataByProject'),
   tokenController.getDataByProject,
 );
 
